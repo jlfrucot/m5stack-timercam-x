@@ -1,7 +1,6 @@
 /****************************************************************************************************************************************************
- *  TITLE: HOW TO BUILD A $9 RSTP VIDEO STREAMER: Using The ESP-32 CAM Board || Arduino IDE - DIY #14
- *  DESCRIPTION: This sketch creates a video streamer than uses RTSP. You can configure it to either connect to an existing WiFi network or to create
- *  a new access point that you can connect to, in order to stream the video feed.
+ *  TITLE: HOW TO BUILD A $9 VIDEO STREAMER: Using The MStack TimerCam X || VSCODE IDE
+ *  DESCRIPTION: This sketch creates a video streamer than uses HTTP.
  *
  *  By Frenoy Osburn
  *  YouTube Video: https://youtu.be/1xZ-0UGiUsY
@@ -35,19 +34,17 @@
 #include "led.h"
 #include "battery.h"
 
+Print &out = Serial; //Pour garder un lien vers le port serie 
 // Enable/Disable Serial
 #define DEBUG true   // true pour avoir les debug sur le port série
-Print &out = Serial; //Pour garder un lien vers le port serie
 #define Serial \
     if (DEBUG) \
     Serial
 
 #define ENABLE_WEBSERVER
-// #define ENABLE_RTSPSERVER
 #define uS_TO_S_FACTOR 1000000 /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP 15       /* Time ESP32 will go to sleep (in seconds) */
 
-// #include <AsyncElegantOTA.h>
 
 // Select camera model voir src/camera_pins.h
 #define CAMERA_MODEL_M5STACK_TIMERCAM
@@ -59,7 +56,7 @@ OV2640 cam;
 #ifdef ENABLE_WEBSERVER
 #include "ota.h"
 
-WebServer server(80);
+WebServer server(80); // Par defaut
 
 #endif
 
@@ -141,7 +138,7 @@ void setup()
     {
         Serial.println("An Error has occurred while mounting SPIFFS");
     }
-    File file = SPIFFS.open("/settings.json");
+    File file = SPIFFS.open("/settings.json"); // On ouvre le fichier contenant les différents paramètres
 
     StaticJsonDocument<500> doc;
     DeserializationError error = deserializeJson(doc, file);
@@ -178,7 +175,7 @@ void setup()
     int webserverPort = doc["webserverPort"];
 
     // Fix WiFi static IP
-    // IPAddress ip;
+    
     Serial.println(wifikey_ssid);
     Serial.println(wifikey_password);
     WiFi.mode(WIFI_STA);
@@ -190,7 +187,7 @@ void setup()
         delay(500);
         Serial.print(F("."));
     }
-    // ip = WiFi.localIP();
+
     Serial.println(F("WiFi connected"));
     Serial.println("");
     Serial.println(WiFi.localIP());
