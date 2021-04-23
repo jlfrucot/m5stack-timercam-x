@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"name": "M5_Timer_Camera",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"gpio.h": "c",
+			"functional": "cpp",
+			"array": "cpp",
+			"*.tcc": "cpp",
+			"bitset": "cpp",
+			"fstream": "cpp",
+			"ostream": "cpp",
+			"sstream": "cpp",
+			"streambuf": "cpp",
+			"regex": "cpp",
+			"typeinfo": "cpp"
+		}
+	}
+}
